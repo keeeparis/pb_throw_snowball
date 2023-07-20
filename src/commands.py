@@ -134,13 +134,14 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     
   if not user_in_chat(chat_id=chat_id, user_id=current_user.id):
     return await context.bot.send_message(
-      text="Сначала Вы должны зарегистроваться с помощью команды /play_snowball",
+      text="Сначала Вы должны зарегистроваться с помощью команды /play",
       chat_id=chat_id,
     )
     
   users = get_all_users(chat_id=chat_id)
+  number_of_users = users.count()
   
-  if users.count() == 1:
+  if number_of_users == 1:
     return await context.bot.send_message(
       text='Участвует только один человек. Мы же не позволим ему кидать снежки в самого себя?',
       chat_id=chat_id
@@ -150,10 +151,10 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   target_user_id = current_user.id
   
   while target_user_id == current_user.id: 
-    randomValue = random.randint(1, users.count())
+    randomValue = random.randint(1, number_of_users)
     
     for i, user in enumerate(users):
-      if i+1 == randomValue:        
+      if i+1 == randomValue:
         target_user = user
         target_user_id = user.id
     
