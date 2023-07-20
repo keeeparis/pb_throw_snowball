@@ -46,7 +46,7 @@ class Interaction(BaseModel):
   class Meta:
     table_name = 'Interaction'
     indexes = (
-      (('from_user', 'to_user'), True),
+      (('from_user', 'to_user'), False),
     )
 
 # Create Tables
