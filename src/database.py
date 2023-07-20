@@ -18,7 +18,7 @@ class User(BaseModel):
   id = AutoField(unique=True)
   username = CharField()
   first_name = CharField()
-  last_name = CharField()
+  last_name = CharField(null=False)
   reg_date = DateField()
   
   class Meta: 
