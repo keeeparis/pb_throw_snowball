@@ -15,7 +15,7 @@ class BaseModel(Model):
     database = db
     
 class User(BaseModel):
-  id = AutoField(unique=True)
+  id = BigAutoField(unique=True)
   username = CharField()
   first_name = CharField()
   last_name = CharField(null=False)
@@ -25,7 +25,7 @@ class User(BaseModel):
     table_name = 'User'
 
 class Chat(BaseModel):
-  id = AutoField(unique=True)
+  id = BigAutoField(unique=True)
   reg_date = DateField()
   
   class Meta: 
