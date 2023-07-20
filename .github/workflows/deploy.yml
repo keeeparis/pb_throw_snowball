@@ -1,0 +1,21 @@
+name: Build and Deploy
+on: 
+  push:
+    branches: [master]
+
+jobs: 
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy python bot
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          key: ${{secrets.SSH_KEY}}
+          username: ${{secrets.SSH_USERNAME}}
+
+          script: |
+            cd /var/www/pb_throw_snowball
+            git pull
+            
+            
