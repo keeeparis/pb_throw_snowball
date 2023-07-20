@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 import random
-from src.util import chat_exists, create_chat, create_user, \
+from src.util import chat_exists, create_chat, create_interaction, create_user, \
   create_user_chat, createMention, get_all_users, read_file, \
   user_exists, user_in_chat
 from src.database import db
@@ -56,7 +56,7 @@ async def play_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
   
   if not user_in_chat(chat_id=chat_id, user_id=current_user.id):
     if not user_exists(current_user.id):
-      create_user(id=current_user.id, username=current_user.username, first_name=current_user.first_name, last_name=current_user.last_name )
+      create_user(id=current_user.id, username=current_user.username, first_name=current_user.first_name, last_name=current_user.last_name)
     
     create_user_chat(user_id=current_user.id, chat_id=chat_id)
 
@@ -157,7 +157,9 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
       if i+1 == randomValue:
         target_user = user
         target_user_id = user.id
-    
+  
+  create_interaction(from_user_id=current_user.id, to_user_id=target_user_id)
+  
   current_user_link = createMention(current_user.username, current_user.id)
   target_user_link = createMention(target_user.username, target_user.id)
   

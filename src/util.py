@@ -2,7 +2,7 @@ import os
 from peewee import *
 import datetime
 
-from src.database import Chat, User, UserChat, db
+from src.database import Chat, User, Interaction, UserChat, db
 
 def create_chat(chat_id: int) -> None:
   Chat.create(id=chat_id, reg_date=datetime.datetime.now())
@@ -14,7 +14,11 @@ def create_user_chat(user_id: int, chat_id: int) -> None:
   user = User.get(User.id == user_id)
   chat = Chat.get(Chat.id == chat_id)
   UserChat.create(user=user, chat=chat)
-    
+  
+def create_interaction(from_user_id: int, to_user_id: int) -> None:
+  from_user = User.get(User.id == from_user_id)
+  to_user = User.get(User.id == to_user_id)
+  Interaction.create(from_user=from_user, to_user=to_user, date=datetime.datetime.now())
   
 def chat_exists(chat_id: int) -> bool:
   try:

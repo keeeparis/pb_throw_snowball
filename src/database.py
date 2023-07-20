@@ -38,9 +38,20 @@ class UserChat(BaseModel):
   class Meta:
     table_name = 'UserChat'
 
+class Interaction(BaseModel):
+  from_user = ForeignKeyField(User, backref='interactions')
+  to_user = ForeignKeyField(User, backref='interact_to')
+  date = DateField()
+  
+  class Meta:
+    table_name = 'Interaction'
+    indexes = (
+      (('from_user', 'to_user'), True),
+    )
+
 # Create Tables
 with db:
-  db.create_tables([User, Chat, UserChat], safe=True)
+  db.create_tables([User, Chat, Interaction, UserChat], safe=True)
 
 
 # try:
