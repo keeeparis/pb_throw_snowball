@@ -165,7 +165,7 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   current_user_link = createMention(current_user.username, current_user.id)
   target_user_link = createMention(target_user.username, target_user.id)
   
-  random_line = random.randint(0, len(lines))
+  random_line = random.randint(0, len(lines) - 1)
   text = lines[random_line].replace('{A}', current_user_link).replace('{B}', target_user_link)
     
   await context.bot.send_message(
