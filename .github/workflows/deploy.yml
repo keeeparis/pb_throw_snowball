@@ -18,6 +18,7 @@ jobs:
             cd /var/www/pb_throw_snowball
             git pull
             docker build -t pb_throw_snowball . # остается рестартануть контейнер со всеми env переменными
+            docker rm -f pb_throw_snowball
             docker run -d --env-file .env --name pb_throw_snowball --network network_local pb_throw_snowball
             
             
