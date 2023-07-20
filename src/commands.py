@@ -12,21 +12,23 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
   """Send a message when the command /start is issued."""
   chat_id = update.message.chat_id
   
-  db.connect(reuse_if_open=True)
+  # db.connect(reuse_if_open=True)
     
   if chat_exists(chat_id=chat_id): 
-    await context.bot.send_message(
+    
+    # db.close()
+    return await context.bot.send_message(
       text="Бот уже инициализорован. Принять учатие можно с помощью команды /play, кидать снежки /throw", 
       chat_id=chat_id
     )
   else:
     create_chat(chat_id=chat_id)
     
-    await context.bot.send_message(
+    # db.close()
+    return await context.bot.send_message(
       text="Отлично, игра началась. Принять учатие можно с помощью команды /play, кидать снежки /throw",
       chat_id=chat_id
     )
-  db.close()
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
   """Send a message when the command /help is issued."""
