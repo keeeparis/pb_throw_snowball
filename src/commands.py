@@ -170,7 +170,7 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         target_user = user
         target_user_id = user.id
   
-  create_interaction(from_user_id=current_user.id, to_user_id=target_user_id)
+  create_interaction(from_user_id=current_user.id, to_user_id=target_user_id, chat_id=chat_id)
   
   current_user_link = createMention(current_user.username, current_user.id)
   target_user_link = createMention(target_user.username, target_user.id)

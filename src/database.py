@@ -41,6 +41,7 @@ class UserChat(BaseModel):
 class Interaction(BaseModel):
   from_user = ForeignKeyField(User, backref='interactions')
   to_user = ForeignKeyField(User, backref='interact_to')
+  chat_id = ForeignKeyField(Chat)
   date = DateField()
   
   class Meta:
