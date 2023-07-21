@@ -34,7 +34,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
   chat_id = update.message.chat_id
   
   await context.bot.send_message(
-      text="/start -> Активировать бота \n/play -> Активировать игрока \n/throw -> Бросить снежок \n", 
+      text="/start -> Активировать бота \n/play -> Активировать игрока \n/throw -> Бросить снежок \n/list -> Список игроков \n", 
       chat_id=chat_id
     )
   
