@@ -214,7 +214,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   
   for i, user in enumerate(query):
     total += user.user_count
-    output_rest += f"{i+1}. {createMention(username=user.username, id=user.id)} — _{user.user_count} раз(а)_.\n"
+    output_rest += f"{i+1}. {user.username} — _{user.user_count} раз(а)_.\n"
 
   output_start_1 = f"Брошено снежков: *{total}*.\n"
   output_start_2 = f"Из них:\n" if total > 0 else ''
