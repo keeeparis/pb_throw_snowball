@@ -1,12 +1,13 @@
+import random
 from telegram import Update
 from telegram.ext import ContextTypes
-import random
-from src.util import chat_exists, create_chat, create_interaction, create_user, \
-  create_user_chat, createMention, get_all_users, read_file, \
-  user_exists, user_in_chat
-from src.database import db
 
-lines = read_file('../assets/throw_output.txt')
+from src.db.database import db
+from src.db.utils import chat_exists, create_chat, create_interaction, create_user, \
+  create_user_chat, user_targets, get_all_users, user_exists, user_in_chat
+from src.utils.utils import read_file, createMention
+
+lines = read_file('../../assets/throw_output.txt')
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
   """Send a message when the command /start is issued."""
@@ -34,7 +35,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
   chat_id = update.message.chat_id
   
   await context.bot.send_message(
-      text="/start -> Активировать бота \n/play -> Активировать игрока \n/throw -> Бросить снежок \n/list -> Список игроков \n", 
+      text="/start -> Активировать бота \n/play -> Активировать игрока \n/throw -> Бросить снежок \n/list -> Список игроков \n/stats -> Статистика\n", 
       chat_id=chat_id
     )
   
@@ -186,4 +187,43 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     disable_notification=True
   )
     
+async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: 
+  """Show stats when command /stats is issued."""
+  db.connect(reuse_if_open=True)
   
+  current_user = update.effective_user
+  chat_id = update.message.chat_id
+  
+  if not chat_exists(chat_id=chat_id):
+    db.close()
+    return await context.bot.send_message(
+      text="Сначала инициализируйте бота с помощью команды /start",
+      chat_id=chat_id
+    )
+    
+  if not user_in_chat(chat_id=chat_id, user_id=current_user.id):
+    db.close()
+    return await context.bot.send_message(
+      text="Сначала Вы должны зарегистроваться с помощью команды /play",
+      chat_id=chat_id,
+    )
+  
+  query = user_targets(chat_id=chat_id, user_id=current_user.id)
+  total = 0
+  output_rest = ''
+  
+  for i, user in enumerate(query):
+    total += user.user_count
+    output_rest += f"{i+1}. {createMention(username=user.username, id=user.id)} — _{user.user_count} раз(а)_.\n"
+
+  output_start_1 = f"Брошено снежков: *{total}*.\n"
+  output_start_2 = f"Из них:\n" if total > 0 else ''
+  output_start = output_start_1 + output_start_2
+  output = output_start + output_rest
+
+  db.close() 
+  return await context.bot.send_message(
+    text=output,
+    chat_id=chat_id,
+    parse_mode="Markdown"
+  )

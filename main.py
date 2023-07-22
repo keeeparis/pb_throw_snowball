@@ -1,10 +1,10 @@
 import logging
-import os
+from decouple import config
 from telegram.ext import Application, CommandHandler
 from telegram import __version__ as TG_VER
-from src.commands import help_command, throw_command, start, play_command, list_command
-from decouple import config
-from src.database import *
+
+from src.commands.commands import help_command, stats_command, throw_command, start, play_command, list_command
+from src.db.database import *
 
 try:
   from telegram import __version_info__
@@ -38,19 +38,10 @@ def main() -> None:
   application.add_handler(CommandHandler('play', play_command))
   application.add_handler(CommandHandler('list', list_command))
   application.add_handler(CommandHandler('throw', throw_command))
+  application.add_handler(CommandHandler('stats', stats_command))
     
   # Start Bot
   application.run_polling()
-  
-  # if config('ENV') == "development":
-  #   application.run_polling()
-  # elif config('ENV') == 'production':
-  #   application.run_webhook(
-  #     listen="0.0.0.0", 
-  #     port=int(os.environ.get('PORT', 5000)), 
-  #     url_path=config('TOKEN'), 
-  #     webhook_url=config('BASE_URL') + config('TOKEN')
-  #   )
   
 if __name__ == "__main__":
   main()
