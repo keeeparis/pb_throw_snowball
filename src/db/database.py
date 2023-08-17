@@ -19,14 +19,14 @@ class User(BaseModel):
   username = CharField(null=True)
   first_name = CharField()
   last_name = CharField(null=True)
-  reg_date = DateField()
+  reg_date = DateTimeField()
   
   class Meta: 
     table_name = 'User'
 
 class Chat(BaseModel):
   id = BigAutoField(unique=True)
-  reg_date = DateField()
+  reg_date = DateTimeField()
   
   class Meta: 
     table_name = 'Chat'
@@ -42,7 +42,7 @@ class Interaction(BaseModel):
   from_user = ForeignKeyField(User, backref='interactions')
   to_user = ForeignKeyField(User, backref='interact_to')
   chat_id = ForeignKeyField(Chat)
-  date = DateField()
+  date = DateTimeField()
   
   class Meta:
     table_name = 'Interaction'
