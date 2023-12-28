@@ -6,7 +6,7 @@ from src.db.database import Chat, User, Interaction, UserChat, db
 def create_chat(chat_id: int) -> None:
   Chat.create(id=chat_id, reg_date=datetime.datetime.utcnow())
   
-def create_user(id: int, username: str, first_name: str, last_name: str) -> None:
+def create_user(id: int, username: str or None, first_name: str or None, last_name: str or None) -> None:
   User.create(id=id, username=username, first_name=first_name, last_name=last_name, reg_date=datetime.datetime.utcnow())
   
 def create_user_chat(user_id: int, chat_id: int) -> None:

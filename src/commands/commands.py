@@ -1,6 +1,8 @@
 import random
 from telegram import Update
 from telegram.ext import ContextTypes
+from telegram.helpers import escape_markdown
+from telegram.constants import ParseMode
 
 from src.db.database import db
 from src.db.utils import chat_exists, create_chat, create_interaction, create_user, \
@@ -212,9 +214,12 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   total = 0
   output_rest = ''
   
-  for i, user in enumerate(query):
-    total += user.user_count
-    output_rest += f"{i+1}. {user.username} — _{user.user_count} раз(а)_.\n"
+  for i, user in enumerate(query.dicts()):
+    # total += user.user_count
+    # output_rest += f"{i+1}. {user.username} — _{user.user_count} раз(а)_.\n"
+    
+    total += user.get('user_count')
+    output_rest += f"{i+1}. {escape_markdown(user.get('username'), 2)} — _{user.get('user_count')} раз(а)_.\n"
 
   output_start_1 = f"Брошено снежков: *{total}*.\n"
   output_start_2 = f"Из них:\n" if total > 0 else ''
@@ -222,8 +227,9 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   output = output_start + output_rest
 
   db.close() 
+  
   return await context.bot.send_message(
-    text=output,
+    text=output.replace(".", "\.").replace("(", "\(").replace(")", "\)"),
     chat_id=chat_id,
-    parse_mode="Markdown"
+    parse_mode=ParseMode.MARKDOWN_V2
   )

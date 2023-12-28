@@ -17,7 +17,7 @@ class BaseModel(Model):
 class User(BaseModel):
   id = BigAutoField(unique=True)
   username = CharField(null=True)
-  first_name = CharField()
+  first_name = CharField(null=True)
   last_name = CharField(null=True)
   reg_date = DateTimeField()
   
