@@ -13,19 +13,19 @@ lines = read_file('../../assets/throw_output.txt')
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
   """Send a message when the command /start is issued."""
-  db.connect(reuse_if_open=True)
+  # db.connect(reuse_if_open=True)
   
   chat_id = update.message.chat_id
     
   if chat_exists(chat_id=chat_id): 
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="Бот уже инициализорован. Принять учатие можно с помощью команды /play, кидать снежки /throw", 
       chat_id=chat_id
     )
   else:
     create_chat(chat_id=chat_id)
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="Отлично, игра началась. Принять учатие можно с помощью команды /play, кидать снежки /throw",
       chat_id=chat_id
@@ -43,13 +43,13 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
   
 async def play_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
   """Register user when command /play is issued."""
-  db.connect(reuse_if_open=True)
+  # db.connect(reuse_if_open=True)
    
   current_user = update.effective_user
   chat_id = update.message.chat_id
     
   if not chat_exists(chat_id=chat_id):
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="Сначала инициализируйте бота с помощью команды /start",
       chat_id=chat_id
@@ -65,14 +65,14 @@ async def play_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     
     create_user_chat(user_id=current_user.id, chat_id=chat_id)
 
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text=response_first,
       chat_id=chat_id,
       parse_mode="Markdown"
     )
   else:
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text=response_already,
       chat_id=chat_id,
@@ -81,12 +81,12 @@ async def play_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
   
 async def list_command(update: Update, context: ContextTypes.DEFAULT_TYPE)-> None:
   """Show registered users when command /list is issued."""
-  db.connect(reuse_if_open=True)
+  # db.connect(reuse_if_open=True)
   
   chat_id = update.message.chat_id
   
   if not chat_exists(chat_id=chat_id):
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="Сначала инициализируйте бота с помощью команды /start",
       chat_id=chat_id
@@ -95,7 +95,7 @@ async def list_command(update: Update, context: ContextTypes.DEFAULT_TYPE)-> Non
   query = get_all_users(chat_id=chat_id)
   
   if query.count() == 0:
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="В этом чате никто не хочет играть :(",
       chat_id=chat_id,
@@ -130,23 +130,23 @@ async def list_command(update: Update, context: ContextTypes.DEFAULT_TYPE)-> Non
 #     await update.message.reply_text(
 #       f"{values}"
 #     )
-  
+
 async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
   """Throw snowball when command /throw is issued."""
-  db.connect(reuse_if_open=True)
+  # db.connect(reuse_if_open=True)
   
   current_user = update.effective_user
   chat_id = update.message.chat_id
   
   if not chat_exists(chat_id=chat_id):
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="Сначала инициализируйте бота с помощью команды /start",
       chat_id=chat_id
     )
     
   if not user_in_chat(chat_id=chat_id, user_id=current_user.id):
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="Сначала Вы должны зарегистроваться с помощью команды /play",
       chat_id=chat_id,
@@ -156,7 +156,7 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   number_of_users = users.count()
   
   if number_of_users == 1:
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text='Участвует только один человек. Мы же не позволим ему кидать снежки в самого себя?',
       chat_id=chat_id
@@ -181,7 +181,7 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   random_line = random.randint(0, len(lines) - 1)
   text = lines[random_line].replace('{A}', current_user_link).replace('{B}', target_user_link)
     
-  db.close()
+  # db.close()
   return await context.bot.send_message(
     text=text,
     chat_id=chat_id,
@@ -191,20 +191,20 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None: 
   """Show stats when command /stats is issued."""
-  db.connect(reuse_if_open=True)
+  # db.connect(reuse_if_open=True)
   
   current_user = update.effective_user
   chat_id = update.message.chat_id
   
   if not chat_exists(chat_id=chat_id):
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="Сначала инициализируйте бота с помощью команды /start",
       chat_id=chat_id
     )
     
   if not user_in_chat(chat_id=chat_id, user_id=current_user.id):
-    db.close()
+    # db.close()
     return await context.bot.send_message(
       text="Сначала Вы должны зарегистроваться с помощью команды /play",
       chat_id=chat_id,
@@ -226,7 +226,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   output_start = output_start_1 + output_start_2
   output = output_start + output_rest
 
-  db.close() 
+  # db.close() 
   
   return await context.bot.send_message(
     text=output.replace(".", "\.").replace("(", "\(").replace(")", "\)"),
