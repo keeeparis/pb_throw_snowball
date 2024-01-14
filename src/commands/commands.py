@@ -55,7 +55,7 @@ async def play_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
       chat_id=chat_id
     )
   
-  mention = createMention(current_user.username, current_user.id)
+  mention = createMention(current_user)
   response_first = f"{mention} теперь участвует в игре!"
   response_already = f"{mention} уже участвует в игре!"
   
@@ -104,7 +104,7 @@ async def list_command(update: Update, context: ContextTypes.DEFAULT_TYPE)-> Non
   output = ''
   
   for i, user in enumerate(query):
-    output += f"{i+1}. {createMention(username=user.username, id=user.id)}\n"
+    output += f"{i+1}. {createMention(user)}\n"
      
   db.close() 
   return await context.bot.send_message(
@@ -175,8 +175,8 @@ async def throw_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
   
   create_interaction(from_user_id=current_user.id, to_user_id=target_user_id, chat_id=chat_id)
   
-  current_user_link = createMention(current_user.username, current_user.id)
-  target_user_link = createMention(target_user.username, target_user.id)
+  current_user_link = createMention(current_user)
+  target_user_link = createMention(target_user)
   
   random_line = random.randint(0, len(lines) - 1)
   text = lines[random_line].replace('{A}', current_user_link).replace('{B}', target_user_link)
