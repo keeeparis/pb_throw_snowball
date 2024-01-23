@@ -3,7 +3,7 @@ from decouple import config
 from telegram.ext import Application, CommandHandler
 from telegram import __version__ as TG_VER
 
-from src.commands.commands import help_command, stats_command, throw_command, start, play_command, list_command
+from src.commands.commands import help_command, stats_command, throw_command, start, play_command, list_command, bots_command
 from src.db.database import *
 
 try:
@@ -40,6 +40,7 @@ def main() -> None:
   application.add_handler(CommandHandler('list', list_command))
   application.add_handler(CommandHandler('throw', throw_command))
   application.add_handler(CommandHandler('stats', stats_command))
+  application.add_handler(CommandHandler('bots', bots_command))
     
   # Start Bot
   application.run_polling()

@@ -41,6 +41,14 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
       chat_id=chat_id
     )
   
+async def bots_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+  list_of_bots = """1. <b>Личностный тест</b> - @five_factor_model_bot\n2. <b>Сколько сантиметров?</b> - @pe_size_bot\n3. <b>Last.FM bot</b> - @lastfm_tgbot\n\nПо интересующим вопросам, @keeeparis"""
+
+  return await update.message.reply_text(
+    list_of_bots,
+    parse_mode=ParseMode.HTML
+  )
+  
 async def play_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
   """Register user when command /play is issued."""
   # db.connect(reuse_if_open=True)
